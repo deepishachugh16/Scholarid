@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScholarAid - Find Scholarships from NGOs, Trusts & Donors</title>
+  <style>
+    /* ----------- GLOBAL STYLES ----------- */
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background-color: #f8f9fa;
+      color: #333;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3 {
+      margin: 10px 0;
+    }
+
+    /* ----------- HEADER ----------- */
+    header {
+      background-color: #fff8dc;
+      padding: 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 { color: #d62828; font-size: 2rem; }
+    header p { color: #444; margin: 5px 0 15px; }
+    nav a {
+      color: #333;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    nav a:hover { color: #d62828; }
+
+    /* ----------- CONTAINER ----------- */
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    /* ----------- FILTERS ----------- */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+    select, button {
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background-color: #218838; }
+
+    /* ----------- SCHOLARSHIPS GRID ----------- */
+    #scholarship-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      justify-items: center;
+    }
+    .scholarship {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 350px;
+      text-align: left;
+      background-color: #fafafa;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .scholarship:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .apply-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .apply-btn:hover { background-color: #0056b3; }
+
+    /* ----------- APPLY FORM ----------- */
+    #apply-form {
+      display: none;
+      margin-top: 30px;
+      text-align: left;
+      width: 90%;
+      max-width: 500px;
+      margin-inline: auto;
+    }
+    #apply-form input, #apply-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #success-message {
+      display: none;
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    /* ----------- TRACKING SECTION ----------- */
+    #tracking ul {
+      list-style: none;
+      padding: 0;
+      text-align: left;
+      max-width: 500px;
+      margin: auto;
+    }
+    #tracking li {
+      background: #e9ecef;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 4px;
+    }
+
+    /* ----------- FOOTER ----------- */
+    footer {
+      background-color: #222;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    /* ----------- RESPONSIVE ----------- */
+    @media (max-width: 768px) {
+      nav a { display: block; margin: 10px 0; }
+      .filters { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ScholarAid</h1>
+    <p>Find scholarships from NGOs, Trusts, and Private Donors</p>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#scholarships">Scholarships</a>
+      <a href="#apply">Apply</a>
+      <a href="#track">Track</a>
+    </nav>
+  </header>
+
+  <div class="container" id="home">
+    <img src="https://via.placeholder.com/700x300?text=ScholarAid+Platform" alt="ScholarAid" style="width:100%; border-radius:8px;">
+    <h2>About ScholarAid</h2>
+    <p>ScholarAid is a platform helping Indian students discover and apply for scholarships from NGOs, Trusts, and Private Donors. We aim to make education accessible through financial aid opportunities for SSC to Masters students.</p>
+  </div>
+
+  <div class="container" id="scholarships">
+    <h2>Available Scholarships</h2>
+    <div class="filters">
+      <select id="course-filter">
+        <option value="">All Courses</option>
+        <option value="SSC">SSC</option>
+        <option value="11th">11th</option>
+        <option value="HSC">HSC</option>
+        <option value="Degree College">Degree College</option>
+        <option value="Masters">Masters</option>
+      </select>
+      <select id="eligibility-filter">
+        <option value="">All Eligibility</option>
+        <option value="Undergraduate">Undergraduate</option>
+        <option value="Graduate">Graduate</option>
+        <option value="Merit-based">Merit-based</option>
+        <option value="Money-based">Money-based</option>
+      </select>
+      <button onclick="filterScholarships()">Filter</button>
+    </div>
+
+    <div id="scholarship-list">
+      <div class="scholarship" data-course="SSC" data-eligibility="Merit-based">
+        <h3>Tech Scholarship by NGO X</h3>
+        <p>Course: SSC | Eligibility: Merit-based</p>
+        <button class="apply-btn" onclick="showApplyForm('Tech Scholarship by NGO X')">Apply Now</button>
+      </div>
+      <div class="scholarship" data-course="11th" data-eligibility="Undergraduate">
+        <h3>Health Aid Trust Scholarship</h3>
+        <p>Course: 11th | Eligibility: Undergraduate</p>
+        <button class="apply-btn" onclick="showApplyForm('Health Aid Trust Scholarship')">Apply Now</button>
+      </div>
+      <div class="scholarship" data-course="HSC" data-eligibility="Graduate">
+        <h3>Private Donor Arts Grant</h3>
+        <p>Course: HSC | Eligibility: Graduate</p>
+        <button class="apply-btn" onclick="showApplyForm('Private Donor Arts Grant')">Apply Now</button>
+      </div>
+      <div class="scholarship" data-course="Degree College" data-eligibility="Money-based">
+        <h3>Business Boost by Trust Y</h3>
+        <p>Course: Degree College | Eligibility: Money-based</p>
+        <button class="apply-btn" onclick="showApplyForm('Business Boost by Trust Y')">Apply Now</button>
+      </div>
+      <div class="scholarship" data-course="Masters" data-eligibility="Graduate">
+        <h3>Advanced Studies Scholarship</h3>
+        <p>Course: Masters | Eligibility: Graduate</p>
+        <button class="apply-btn" onclick="showApplyForm('Advanced Studies Scholarship')">Apply Now</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="apply">
+    <h2>Apply for Scholarship</h2>
+    <form id="apply-form">
+      <input type="text" id="scholarship-name" readonly />
+      <input type="text" placeholder="Your Name" required />
+      <input type="email" placeholder="Your Email" required />
+      <textarea placeholder="Why do you deserve this scholarship?" required></textarea>
+      <button type="submit">Submit Application</button>
+    </form>
+    <div id="success-message">🎉 Application submitted successfully!</div>
+  </div>
+
+  <div class="container" id="track">
+    <h2>Track Your Applications</h2>
+    <div id="tracking">
+      <ul id="applied-list"></ul>
+      <button onclick="clearApplications()" style="margin-top:10px; background:#dc3545;">Clear All</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 ScholarAid | Designed with ❤️ to support education</p>
+  </footer>
+
+  <script>
+    // Filter Scholarships
+    function filterScholarships() {
+      const course = document.getElementById('course-filter').value;
+      const eligibility = document.getElementById('eligibility-filter').value;
+      const scholarships = document.querySelectorAll('.scholarship');
+
+      scholarships.forEach(sch => {
+        const matches = (!course || sch.dataset.course === course) &&
+                        (!eligibility || sch.dataset.eligibility === eligibility);
+        sch.style.display = matches ? 'block' : 'none';
+      });
+    }
+
+    // Show Apply Form
+    function showApplyForm(scholarshipName) {
+      document.getElementById('scholarship-name').value = scholarshipName;
+      document.getElementById('apply-form').style.display = 'block';
+      document.getElementById('success-message').style.display = 'none';
+      document.getElementById('apply-form').scrollIntoView({ behavior: "smooth" });
+    }
+
+    // Submit Application
+    document.getElementById('apply-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const scholarship = document.getElementById('scholarship-name').value;
+      let applied = JSON.parse(localStorage.getItem('appliedScholarships')) || [];
+      applied.push({ name: scholarship, date: new Date().toLocaleDateString() });
+      localStorage.setItem('appliedScholarships', JSON.stringify(applied));
+      document.getElementById('apply-form').reset();
+      document.getElementById('apply-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'block';
+      loadTracking();
+    });
+
+    // Load Application Tracking
+    function loadTracking() {
+      const applied = JSON.parse(localStorage.getItem('appliedScholarships')) || [];
+      const list = document.getElementById('applied-list');
+      list.innerHTML = '';
+      applied.forEach(app => {
+        const li = document.createElement('li');
+        li.textContent = `${app.name} - Applied on ${app.date}`;
+        list.appendChild(li);
+      });
+    }
+
+    // Clear Applications
+    function clearApplications() {
+      localStorage.removeItem('appliedScholarships');
+      loadTracking();
+    }
+
+    // Load on page ready
+    window.onload = loadTracking;
+  </script>
+</body>
+</html>
